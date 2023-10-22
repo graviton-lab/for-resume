@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+public class Program
+{
+    private const string CommandAdd = "1";
+    private const string CommandRemove = "2";
+    private const string CommandPrintAll = "3";
+    private const string CommandExit = "4";
+    private const string CommandBack = "BACK";
+    
+    private static List<string> names = new List<string>() { "Ифанов И.И. ", "Бабяков Т.О. ", "Липестков В.А. " };
+    private static List<string> posts = new List<string>() { "Начальник ", "Клерк ", "Раб " };
+    
+    public static void Main(string[] args)
+    {
+        while (true)
+        {
+            Menu();
+        }
+    }
+ 
+    private static void Menu()
+    {
+        Console.WriteLine("\nПривет! Воспользуйся командами: \n " +
+                      CommandAdd + " - добавить досье; \n " +
+                      CommandRemove + " - удалить досье; \n " +
+                      CommandPrintAll + " - вывести все досье; \n " +
+                      CommandExit + " - выйти");
+    
+        string inputCommands = Console.ReadLine();
+    
+        switch (inputCommands)
+        {
+            case CommandAdd:
+                AddWorker();
+                break;
+                
+            case CommandRemove:
+                RemoveWorker();
+                break;
+                
+            case CommandPrintAll:
+                PrintAll();
+                break;
+                
+            case CommandExit:
+                break;
+                
+            default:
+                Console.WriteLine("Неверная команда!");
+                break;
+        }
+    }
+    
+    private static void RemoveWorker()
+    {
+        Console.WriteLine("Введите номер досье, которое хотите удалить или введите" + CommandBack + "для возврата");
+        string input = Console.ReadLine();
+        if (input == CommandBack)
+        {
+            Console.Clear();
+        }
+        else if (int.TryParse(input, out int numberForDelete) && numberForDelete >= 1 && numberForDelete <= names.Count)
+        {
+            DeleteElement(names, numberForDelete - 1);
+            DeleteElement(posts, numberForDelete - 1);
+        }
+        else
+        {
+            Console.WriteLine("Неверный номер досье!");
+            RemoveWorker();
+        }
+    }
+    
+    private static void PrintAll()
+    {
+        Console.WriteLine(string.Join(" - ", names) + " - " + string.Join(" - ", posts));
+    }
+    
+    private static void AddWorker()
+    {
+        Console.WriteLine("Введите ФИО: ");
+        string nameAdd = Console.ReadLine();
+        names.Add(nameAdd);
+    
+        Console.WriteLine("Введите должность: ");
+        string postAdd = Console.ReadLine();
+        posts.Add(postAdd);
+    }
+    
+    private static void DeleteElement(List<string> list, int index)
+    {
+        list.RemoveAt(index);
+    }
+}
