@@ -1,0 +1,163 @@
+using System;
+ 
+public class Program
+{
+ 
+    public static void Main(string[] args)
+    {
+        const string CommandAddWorker = "1";
+        const string CommandRemoveWorker = "2";
+        const string CommandFind = "3";
+        const string CommandPrintAll = "4";
+        const string CommandExit = "5";
+ 
+        bool exitProgramm = true;
+ 
+        string[] names = new string[] { "Иванов И.И. ", "Бабяков Т.О. ", "Липестков В.А. " };
+        string[] posts = new string[] { "Начальник ", "Клерк ", "Раб " };
+ 
+        while (exitProgramm)
+        {
+            Console.WriteLine("Привет! Воспользуйся командами: \n " +
+                              $"{CommandAddWorker} - добавить досье; \n " +
+                              $"{CommandRemoveWorker} - удалить досье; \n " +
+                              $"{CommandFind} - найти досье; \n " +
+                              $"{CommandPrintAll} - вывести все досье; \n " +
+                              $"{CommandExit} - выйти");
+ 
+            string inputCommand = Console.ReadLine();
+ 
+            switch (inputCommand)
+            {
+                case CommandAddWorker:
+                    AddWorker(ref names, ref posts);
+                    break;
+ 
+                case CommandRemoveWorker:
+                    RemoveWorker(ref names, ref posts);
+                    break;
+ 
+                case CommandFind:
+                    FindWorker(names, posts);
+                    break;
+ 
+                case CommandPrintAll:
+                    ShowAll(names, posts);
+                    break;
+ 
+                case CommandExit:
+                    exitProgramm = false;
+                    break;
+ 
+                default:
+                    Console.WriteLine("Неверная команда!");
+                    break;
+            }
+        }
+    }
+ 
+    private static void RemoveWorker(ref string[] names, ref string[] posts)
+    {
+        string back = "BACK";
+        Console.WriteLine($"Введите номер досье, которое хотите удалить или введите {back} для возврата");
+        string input = Console.ReadLine();
+ 
+        if (names.Length == 0)
+        {
+            Console.WriteLine("Нет досье для удаления!");
+            return;
+        }
+        else if(input == back)
+        {
+            Console.Clear();
+        }
+        else if (int.TryParse(input, out int numberForDelete) && numberForDelete >= 1 && numberForDelete <= names.Length)
+        {
+            names = DeleteElement(names, numberForDelete - 1);
+            posts = DeleteElement(posts, numberForDelete - 1);
+            Console.WriteLine("Досье удалино");
+        }
+        else
+        {
+            Console.WriteLine("Досье с таким номером не существует!!!");
+        }
+    }
+ 
+    private static void ShowAll(string[] names, string[] posts)
+    {
+        if (names.Length == 0)
+        {
+            Console.WriteLine("Нет досье для показа!");
+            return;
+        }
+ 
+        for (int i = 0; i < names.Length; i++)
+        {
+            Console.WriteLine("{0}. {1} - {2}", i + 1, names[i], posts[i]);
+        }
+    }
+ 
+    private static void AddWorker(ref string[] names, ref string[] posts)
+    {
+        Console.WriteLine("Введите ФИО: ");
+        string nameAdd = Console.ReadLine();
+        Console.WriteLine("Введите должность: ");
+        string postAdd = Console.ReadLine();
+ 
+        names = AddLine(names, nameAdd);
+        posts = AddLine(posts, postAdd);
+    }
+ 
+    private static string[] AddLine(string[] array, string text)
+    {
+        string[] temporaryArray = new string[array.Length + 1];
+ 
+        for (int i = 0; i < array.Length; i++)
+        {
+            temporaryArray[i] = array[i];
+        }
+ 
+        temporaryArray[temporaryArray.Length - 1] = text;
+        array = temporaryArray;
+        return array;
+    }
+ 
+    private static void FindWorker(string[] names, string[] posts)
+    {
+        Console.WriteLine("Введите фамилию сотрудника:");
+        string input = Console.ReadLine();
+        int count = 0;
+ 
+        for (int i = 0; i < names.Length; i++)
+        {
+            if (names[i].StartsWith(input, StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("{0}. {1} - {2}", i + 1, names[i], posts[i]);
+                count++;
+            }
+        }
+ 
+        if (count == 0)
+        {
+            Console.WriteLine($"Сотрудники с фамилией {0} не найдены!", input);
+        }
+    }
+    
+    private static string[] DeleteElement(string[] array, int index)
+    {
+        string[] tempArray = new string[array.Length - 1];
+ 
+        for (int i = 0; i < index; i++)
+        {
+            tempArray[i] = array[i];
+        }
+ 
+        for (int i = index; i < array.Length - 1; i++)
+        {
+            tempArray[i] = array[i + 1];
+        }
+ 
+        array = tempArray;
+        return array;
+    }
+}
