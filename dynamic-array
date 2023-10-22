@@ -1,0 +1,29 @@
+bool exit = false;
+ 
+int[] arrayUnior = new int[0];
+   
+            while (!exit) 
+            {
+               
+                string inputCommands = Console.ReadLine();
+                if (inputCommands == "exit")
+                {
+                    exit = true;
+                }
+                else if (inputCommands == "sum")
+                {
+                    int sum = 0;
+                    for (int i = 0; i < arrayUnior.Length; i++)
+                        sum += arrayUnior[i];
+                        Console.WriteLine("Сумма введённых чисел равна " + sum);
+                }
+                else
+                {
+                    int[] secondMas = new int[arrayUnior.Length + 1];
+                    int inputNumbers = Convert.ToInt32(inputCommands);
+                    secondMas[secondMas.Length - 1] = inputNumbers;
+                    for (int i = 0; i < arrayUnior.Length; i++)
+                        secondMas[i] = arrayUnior[i];
+                    arrayUnior = secondMas;
+                }
+            }
