@@ -1,0 +1,46 @@
+using System;
+ 
+public class Program
+{
+    public static void Main()
+    {
+        int maximumHealthLength = 10;
+        Console.Write("Введите процент здоровья:");
+        int healthPercentage = Convert.ToInt32(Console.ReadLine());
+        ShowHealthBar(healthPercentage, ConsoleColor.Red, maximumHealthLength);
+        Console.ReadKey();
+    }
+ 
+    static void ShowHealthBar(int healthPercentage, ConsoleColor color, int maximumHealthLength)
+    {
+        int maximumPercentageValue = 100;
+        char space = ' ';
+ 
+        ConsoleColor defaultColor = Console.BackgroundColor;
+ 
+        if (healthPercentage > maximumPercentageValue || healthPercentage < 0)
+        {
+            Console.WriteLine("Не допустимое значение!");
+            Environment.Exit(0);
+        }
+ 
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine("[");
+        Console.BackgroundColor = color;
+ 
+        int healthBarLength = (int)Math.Round((double)healthPercentage / maximumPercentageValue * maximumHealthLength);
+ 
+        DrawBar(space, healthBarLength);
+        Console.BackgroundColor = defaultColor;
+        DrawBar(space, maximumHealthLength - healthBarLength);
+        Console.Write("]");
+    }
+ 
+    static void DrawBar(char character, int length)
+    {
+        for (int i = 0; i < length; i++)
+        {
+            Console.Write(character);
+        }
+    }
+}
